@@ -2,69 +2,59 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Central indexed container providing global read-access to all Pokémon species templates.
+/// Central registry asset serving as a global lookup index for all Pokémon species in the game.
+/// Lives as a permanent file within the project directories.
 /// </summary>
-public class PokemonDatabase : MonoBehaviour
+[CreateAssetMenu(fileName = "PokemonDatabase", menuName = "Pokemon/Pokemon Database")]
+public class PokemonDatabase : ScriptableObject
 {
-    // Global static reference allowing any script to easily read data from the registry
-    public static PokemonDatabase Instance { get; private set; }
+    [Header("Master Species Index")]
+    [SerializeField]
+    private List<PokemonSpecies> speciesList = new List<PokemonSpecies>();
 
-    [Header("Species Registry")]
-    [SerializeField] private List<PokemonSpecies> allSpecies = new List<PokemonSpecies>();
-
-    // Internal quick-lookup table sorting species by their standard Index Number IDs
-    private readonly Dictionary<int, PokemonSpecies> speciesLookupTable = new Dictionary<int, PokemonSpecies>();
-
-    private void Awake()
-    {
-        // Enforce the Singleton pattern to ensure only one instance of the database exists
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
-
-        InitializeLookupTable();
-    }
+    private Dictionary<int, PokemonSpecies> speciesLookupTable;
 
     /// <summary>
     /// Builds the internal dictionary lookup keys from the assigned ScriptableObject list.
+    /// Run this from your global GameSystems hub during the early game boot sequence.
     /// </summary>
-    private void InitializeLookupTable()
+    public void InitializeLookupTable()
     {
-        speciesLookupTable.Clear();
+        speciesLookupTable = new Dictionary<int, PokemonSpecies>();
 
-        foreach (PokemonSpecies species in allSpecies)
+        foreach (var species in speciesList)
         {
             if (species == null) continue;
 
-            if (!speciesLookupTable.ContainsKey(species.indexNumber))
+            if (!speciesLookupTable.ContainsKey(species.speciesId))
             {
-                speciesLookupTable.Add(species.indexNumber, species);
+                speciesLookupTable.Add(species.speciesId, species);
             }
             else
             {
-                Debug.LogWarning($"PokemonDatabase: Duplicate index entry detected for ID #{species.indexNumber} ({species.speciesName}). Skipping duplicate.");
+                Debug.LogWarning($"PokemonDatabase: Duplicate species entry detected for ID '{species.speciesId}' ({species.speciesName}). Skipping duplicate.");
             }
         }
     }
 
     /// <summary>
-    /// Retrieves a species template directly via its numerical index ID.
+    /// Retrieves a species static blueprint using its distinct identifier integer.
     /// </summary>
-    /// <param name="indexId">The Index Number ID to search for.</param>
-    /// <returns>The matching PokemonSpecies asset, or null if not registered.</returns>
-    public PokemonSpecies GetSpeciesById(int indexId)
+    /// <param name="id">The unique ID of the target species.</param>
+    /// <returns>The matching PokemonSpecies blueprint asset, or null if not found.</returns>
+    public PokemonSpecies GetSpeciesById(int id)
     {
-        if (speciesLookupTable.TryGetValue(indexId, out PokemonSpecies species))
+        if (speciesLookupTable == null)
         {
-            return species;
+            InitializeLookupTable();
         }
 
-        Debug.LogError($"PokemonDatabase: Request failed. Species Index ID #{indexId} is not registered in the database list.");
+        if (speciesLookupTable.TryGetValue(id, out PokemonSpecies matchedSpecies))
+        {
+            return matchedSpecies;
+        }
+
+        Debug.LogError($"PokemonDatabase: Request failed. Species ID '{id}' is not registered in the database list.");
         return null;
     }
 }

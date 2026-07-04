@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4059cffdafd75f3428428a7953ffacbb, type: 3}
   m_Name: 001_Bulbasaur
   m_EditorClassIdentifier: 
-  indexNumber: 1
+  speciesId: 1
   speciesName: Bulbasaur
   primaryType: 3
   secondaryType: 7
@@ -23,7 +23,10 @@ MonoBehaviour:
   baseSpeed: 45
   growthRate: 2
   baseExpYield: 64
-  evolutionType: 1
-  evolutionLevel: 16
-  evolutionTarget: {fileID: 11400000, guid: 55d1c088beabde3468494c14a7521993, type: 2}
-  learnset: []
+  catchRate: 0
+  evolutions: []
+  learnset:
+  - level: 1
+    moveData: {fileID: 11400000, guid: 31fa0fa5119be554f80d11705b8f85cc, type: 2}
+  - level: 1
+    moveData: {fileID: 11400000, guid: c343e3fac8a72bb429afab59858f1c3d, type: 2}

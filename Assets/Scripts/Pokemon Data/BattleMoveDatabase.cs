@@ -2,40 +2,25 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Central indexed container providing global read-access to all battle move templates.
+/// Central registry asset serving as a global lookup index for all battle moves in the game.
+/// Lives as a permanent file within the project directories.
 /// </summary>
-public class BattleMoveDatabase : MonoBehaviour
+[CreateAssetMenu(fileName = "BattleMoveDatabase", menuName = "Pokemon/Battle Move Database")]
+public class BattleMoveDatabase : ScriptableObject
 {
-    // Global static reference allowing any script to easily read data from the registry
-    public static BattleMoveDatabase Instance { get; private set; }
-
     [Header("Move Registry")]
-    [SerializeField] private List<BattleMoveData> allMoves = new List<BattleMoveData>();
+    [SerializeField]
+    private List<BattleMoveData> allMoves = new List<BattleMoveData>();
 
-    // Internal quick-lookup table sorting move blueprints by their exact string names
-    private readonly Dictionary<string, BattleMoveData> moveLookupTable = new Dictionary<string, BattleMoveData>();
-
-    private void Awake()
-    {
-        // Enforce the Singleton pattern to ensure only one instance of the database exists
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
-
-        InitializeLookupTable();
-    }
+    private Dictionary<string, BattleMoveData> moveLookupTable;
 
     /// <summary>
     /// Builds the internal dictionary lookup keys from the assigned ScriptableObject list.
+    /// Run this from your global GameSystems hub during the early game boot sequence.
     /// </summary>
-    private void InitializeLookupTable()
+    public void InitializeLookupTable()
     {
-        moveLookupTable.Clear();
+        moveLookupTable = new Dictionary<string, BattleMoveData>();
 
         foreach (BattleMoveData move in allMoves)
         {
@@ -62,6 +47,11 @@ public class BattleMoveDatabase : MonoBehaviour
     /// <returns>The matching BattleMoveData asset, or null if not registered.</returns>
     public BattleMoveData GetMoveByName(string moveName)
     {
+        if (moveLookupTable == null)
+        {
+            InitializeLookupTable();
+        }
+
         if (string.IsNullOrEmpty(moveName)) return null;
 
         string key = moveName.ToLower().Trim();

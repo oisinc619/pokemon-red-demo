@@ -8,7 +8,7 @@ using UnityEngine;
 public class PokemonSpecies : ScriptableObject
 {
     [Header("Identity Data")]
-    public int indexNumber;
+    public int speciesId;
     public string speciesName;
     public PokemonType primaryType;
     public PokemonType secondaryType;
@@ -23,19 +23,27 @@ public class PokemonSpecies : ScriptableObject
     [Header("Growth & Progression")]
     public GrowthRate growthRate;
     public int baseExpYield;
+    public int catchRate; // Base probability metric for capture calculations
 
     [Header("Evolution Mapping")]
-    public EvolutionType evolutionType;
-    public int evolutionLevel;
-    public PokemonSpecies evolutionTarget;
+    public List<EvolutionRule> evolutions = new List<EvolutionRule>();
 
     [Header("Move Learning Roadmap")]
     public List<LearnableMove> learnset = new List<LearnableMove>();
 }
 
 /// <summary>
-/// Dictates the mechanical condition required to trigger a species metamorphosis event.
+/// Structures the mechanical validation rules required to trigger a species metamorphosis event.
 /// </summary>
+[System.Serializable]
+public struct EvolutionRule
+{
+    public EvolutionType evolutionType;
+    public int evolutionLevel; // Relevant if type is LevelUp
+    public ItemData evolutionItem; // Placeholder for future stone/item tracking
+    public PokemonSpecies evolutionTarget;
+}
+
 public enum EvolutionType
 {
     None,

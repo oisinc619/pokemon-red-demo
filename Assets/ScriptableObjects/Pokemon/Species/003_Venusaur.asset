@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4059cffdafd75f3428428a7953ffacbb, type: 3}
   m_Name: 003_Venusaur
   m_EditorClassIdentifier: 
-  indexNumber: 3
+  speciesId: 3
   speciesName: Venusaur
   primaryType: 3
   secondaryType: 7
@@ -23,7 +23,8 @@ MonoBehaviour:
   baseSpeed: 80
   growthRate: 2
   baseExpYield: 208
-  evolutionType: 0
-  evolutionLevel: 0
-  evolutionTarget: {fileID: 0}
-  learnset: []
+  catchRate: 0
+  evolutions: []
+  learnset:
+  - level: 1
+    moveData: {fileID: 11400000, guid: 31fa0fa5119be554f80d11705b8f85cc, type: 2}

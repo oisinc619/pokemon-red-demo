@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4059cffdafd75f3428428a7953ffacbb, type: 3}
   m_Name: 002_Ivysaur
   m_EditorClassIdentifier: 
-  indexNumber: 2
+  speciesId: 2
   speciesName: Ivysaur
   primaryType: 3
   secondaryType: 7
@@ -23,7 +23,8 @@ MonoBehaviour:
   baseSpeed: 60
   growthRate: 2
   baseExpYield: 141
-  evolutionType: 1
-  evolutionLevel: 32
-  evolutionTarget: {fileID: 11400000, guid: f71af5280d888eb43b050d0de88200b7, type: 2}
-  learnset: []
+  catchRate: 0
+  evolutions: []
+  learnset:
+  - level: 1
+    moveData: {fileID: 11400000, guid: 31fa0fa5119be554f80d11705b8f85cc, type: 2}

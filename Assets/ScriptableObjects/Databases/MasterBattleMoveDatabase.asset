@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f0cd92052e22e846b84d78ef66acbac, type: 3}
+  m_Name: MasterBattleMoveDatabase
+  m_EditorClassIdentifier: 
+  allMoves:
+  - {fileID: 11400000, guid: c343e3fac8a72bb429afab59858f1c3d, type: 2}
+  - {fileID: 11400000, guid: aa06ecf877522c240b896d7340464b4d, type: 2}
+  - {fileID: 11400000, guid: 31fa0fa5119be554f80d11705b8f85cc, type: 2}
+  - {fileID: 11400000, guid: f80681e4a97b7d7449f4906fd65a6dea, type: 2}
